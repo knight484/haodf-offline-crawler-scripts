@@ -43,7 +43,7 @@ with open(sourceFilePath) as sf:
 
                 # CRAWL OFFLINE COMMENT LINKS
                 jingyanLink = l.replace('.htm','/jingyan/1.htm')
-                offlineCommentLink = 'https:'+requests.head(jingyanLink, headers=defaultHeaders).headers.get('Location')
+                offlineCommentLink = 'https:'+requests.get(jingyanLink, headers=defaultHeaders, allow_redirects=False).headers.get('Location')
 
                 # CRAWL PERSONAL WEBSITE LINKS
                 sleep(float(wait))
@@ -57,7 +57,7 @@ with open(sourceFilePath) as sf:
                     # CRAWL DOCTOR ID
                     sleep(float(wait))
                     clinicLink = personalWeb+'clinic/selectclinicservice'
-                    r = requests.head(clinicLink, headers=defaultHeaders)
+                    r = requests.get(clinicLink, headers=defaultHeaders, allow_redirects=False)
                     doctorID = re.search('host_user_id=(\d+)\&', r.headers.get('Location') ).group(1)
 
                 rf.write('\n'+defaultSeperator.join([n,doctorID,personalWeb,offlineCommentLink,d,l,p]))
